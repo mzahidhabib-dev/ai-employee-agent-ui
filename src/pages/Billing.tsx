@@ -35,6 +35,27 @@ export default function Billing() {
 
   const totalSpend = logs.reduce((sum, log) => sum + log.cost, 0);
 
+  const exportToCSV = () => {
+    if (logs.length === 0) return;
+    const headers = ['Timestamp', 'Target Node', 'Tokens Used', 'Calculated Cost (USD)'];
+    const csvContent = [
+      headers.join(','),
+      ...logs.map(log => 
+        `"${new Date(log.date).toLocaleString()}","${log.node}",${log.tokens},${log.cost.toFixed(5)}`
+      )
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `billing_invoice_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold text-slate-800 tracking-tight">Client Billing</h1>
@@ -50,7 +71,10 @@ export default function Billing() {
               <p className="text-4xl font-bold text-indigo-600 mb-2">${totalSpend.toFixed(4)}</p>
               <p className="text-sm text-slate-500 mb-6">Based on Gemini 1.5 Flash token rates</p>
             </div>
-            <button className="w-full py-2.5 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors font-medium">
+            <button 
+              onClick={exportToCSV}
+              className="w-full py-2.5 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors font-medium"
+            >
               Export CSV Invoice
             </button>
           </div>
