@@ -6,7 +6,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
     // Hardcoded dev key matching the backend's expected AGENT_API_KEY
-    'X-API-Key': 'dev-secret-key', 
+    'X-API-Key': 'xflvmsfkljo9gu409t4-VDSPOVJWOR9T74RU2I0EI24T75Y08EOIW4U5T3Q8aJMo', 
   },
 });
 
