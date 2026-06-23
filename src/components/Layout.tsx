@@ -1,11 +1,12 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Mail, Users, FileBarChart, CreditCard } from 'lucide-react';
+import { LayoutDashboard, Mail, Users, FileBarChart, Activity, CreditCard } from 'lucide-react';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/emails', label: 'Emails', icon: Mail },
   { path: '/contacts', label: 'Contacts', icon: Users },
   { path: '/reports', label: 'Reports', icon: FileBarChart },
+  { path: '/evaluations', label: 'Evaluations', icon: Activity },
   { path: '/billing', label: 'Billing', icon: CreditCard },
 ];
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Mail, Users, DollarSign } from 'lucide-react';
+import { Mail, Users, DollarSign, Activity } from 'lucide-react';
 import api from '../lib/api';
 
 interface DashboardMetrics {
@@ -8,8 +8,17 @@ interface DashboardMetrics {
   total_cost_usd: number;
 }
 
+interface Evaluation {
+  id: string;
+  accuracy: number;
+  faithfulness: number;
+  relevancy: number;
+  date: string;
+}
+
 export default function Dashboard() {
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
+  const [latestEval, setLatestEval] = useState<Evaluation | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,6 +26,15 @@ export default function Dashboard() {
       .then(res => setMetrics(res.data))
       .catch(err => console.error("Failed to fetch metrics", err))
       .finally(() => setLoading(false));
+
+    // Hardcoded dummy data for evaluations
+    setLatestEval({
+      id: "dummy_1",
+      accuracy: 92.5,
+      faithfulness: 0.94,
+      relevancy: 0.96,
+      date: new Date().toISOString()
+    });
   }, []);
 
   return (
@@ -26,7 +44,7 @@ export default function Dashboard() {
       {loading ? (
         <div className="text-slate-500 animate-pulse">Loading live metrics...</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <MetricCard 
             title="Total Emails Processed" 
             value={metrics?.emails_processed || 0} 
@@ -44,6 +62,12 @@ export default function Dashboard() {
             value={`$${(metrics?.total_cost_usd || 0).toFixed(4)}`} 
             icon={DollarSign} 
             color="bg-indigo-500" 
+          />
+          <MetricCard 
+            title="System Accuracy" 
+            value={latestEval ? `${latestEval.accuracy}%` : "N/A"} 
+            icon={Activity} 
+            color="bg-violet-500" 
           />
         </div>
       )}

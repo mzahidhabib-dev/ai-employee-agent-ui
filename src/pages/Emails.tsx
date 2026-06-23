@@ -11,6 +11,7 @@ interface EmailLog {
   summary: string;
   sentiment: string;
   draft_reply: string;
+  research_context: string | null;
   date: string;
   feedback_correct: boolean | null;
 }
@@ -140,6 +141,15 @@ export default function Emails() {
                             <div className="text-slate-700 bg-white p-3 rounded-lg border border-slate-200 whitespace-pre-wrap font-mono text-sm h-40 overflow-y-auto">
                               {email.draft_reply || "No reply was drafted for this email."}
                             </div>
+                            
+                            {email.research_context && (
+                              <div className="mt-4">
+                                <h4 className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-2">Agent Research Context</h4>
+                                <div className="text-slate-700 bg-indigo-50 p-3 rounded-lg border border-indigo-100 whitespace-pre-wrap font-mono text-xs max-h-32 overflow-y-auto">
+                                  {email.research_context}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </td>
